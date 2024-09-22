@@ -13,7 +13,11 @@ const cors = require('cors');
 app.use(cors());
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/files', express.static(path.join(__dirname, 'files')));
+app.use(express.static('public'));
 
+
+const baseUrl = `http://localhost:3001`;  // Replace with your domain in production
 
 // Sync the database
 sequelize.sync()
@@ -84,7 +88,6 @@ app.post('/add-project', upload.single('image'), async (req, res) => {
 app.get('/projects', async (req, res) => {
   try {
 
-    const baseUrl = `http://localhost:3001`;  // Replace with your domain in production
 
     // Create a new project
     const projects = await Project.findAll();
@@ -105,6 +108,17 @@ app.get('/projects', async (req, res) => {
   }
 });
 
+app.get('/download-resume', async(req, res)=>{
+  const filePath = path.join(__dirname, 'files', 'Prathmesh- Rasa-Resume.pdf');
+  const fileName = 'Prathmesh_rasal_resume.pdf';
+  res.download(filePath, fileName, (err)=>{
+    if (err) {
+      console.error('Error occurred while downloading file:', err);
+      res.status(500).send('Error downloading file.');
+    }
+  })
+
+});
 // Start the server
 app.listen(3001, () => {
   console.log("Server connected on port 3001");
