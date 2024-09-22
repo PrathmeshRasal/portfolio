@@ -10,6 +10,10 @@ const Project = sequelize.define('Projects', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  image: {
+    type: DataTypes.STRING,  // Ensure this field exists to store the image path
+    allowNull: true,
+  }
 }, {
   // Other model options
   timestamps: true, // Automatically add createdAt and updatedAt fields
